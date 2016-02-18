@@ -157,16 +157,3 @@ jQuery.fn.center = function () {
    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
    return this;
 }
-
-//test code
-$(document).ready(function() {
-   popup = new PopupMessage();
-   popup.init({
-      title: 'Heed my Warning',
-      message: 'Testing a new notification system<br />using the custom made plugin "PopupMessage.js"!',
-      button: 'Pop Off',
-      cookie: true,
-      cookieName: 'fflPopupMessage',
-      customCss: 'newClassName'
-   });
-});
