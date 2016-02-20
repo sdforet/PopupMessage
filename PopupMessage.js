@@ -98,11 +98,15 @@ function PopupMessage() {
          $('.popupMessage').center();
       };
 
-      //dismiss the popup and set a cookie
+      //set a cookie, dismiss the popup and destroy the elements
       $('.msgButton').click( function() {
-         $('.popupMessage').fadeToggle('slow');
-         $('.popupShader').fadeToggle('slow');
          setPopupMessageCookie(options.cookieName);
+         $('.popupMessage').fadeToggle('slow');
+         $('.popupShader').fadeToggle('slow', function() {
+            $('.popupMessage').empty().remove();
+            $('.popupShader').empty().remove();
+            options.message = '';
+         });
       });
    }
 
@@ -146,6 +150,39 @@ function PopupMessage() {
       now.setTime(time);
       document.cookie = cookieName + '=' + true + '; expires=' + now.toUTCString() + '; path=/';
    }
+}
+
+/**
+ * helper functions to use ajax to load popup content and initialize
+ */
+function loadRemotePopupContent(popSet) {
+
+   $.ajax({
+      url: popSet.url,
+      success: function(result){
+        popSet.messageHtml = result;
+      }
+   });
+
+   $(document).ajaxComplete(function(){
+      if (!popSet.messageHtml) {
+         popSet.messageHtml = 'There was an error fetching content.';
+      }
+      showPopup(popSet);
+      //clear old data and un-bind this ajaxComplete() so it won't interfere with other Ajax requests later
+      popSet.messageHtml = '';
+      $(document).off('ajaxComplete');
+   });
+}
+
+function showPopup(popSet){
+   var popup = new PopupMessage();
+   popup.init({
+      title: popSet.title,
+      message: popSet.messageHtml,
+      button: popSet.button,
+      customCss: popSet.cssClass
+   });
 }
 
 /**

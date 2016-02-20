@@ -1,11 +1,36 @@
 # PopupMessage
-Function-Based JavaScript/jQuery Object to build custom popup messages, with optional 12hr/1yr cookie. Can be used as an alternate to js alert or other more complex (high overhead) js solutions.
+Function-Based JavaScript/jQuery Object to build custom popup messages.
 
-###Include the following files in addition to this plugin:
+###Options:
+ - title
+ - message
+ - button
+ - cookie
+ - cookieName
+ - customCss
+ - url
+
+###Features:
+ - optional 12hr or 1yr cookie
+ - alternative to js alert() or other more complex (high overhead) js solutions
+ - multi-instance
+ - content manually or dynamically loaded
+
+###Requires:
 * jquery-1.11.1.min.js
 * jquery.cookie.js
 
-###Sample usage within your js page's document.ready()
+###Basic usage
+```
+   var message = new PopupMessage();
+   message.init({
+      title: 'string',       // required
+      message: 'string',     // required, can be any valid html uses $.parseHTML()
+      button: 'string'       // required, text used on the (dismissal) button
+   });
+```
+
+###Usage with cookies and custom css class
 ```
    var message = new PopupMessage();
    message.init({
@@ -18,3 +43,26 @@ Function-Based JavaScript/jQuery Object to build custom popup messages, with opt
    });
 ```
 **Note:** when specifying `cookie:true`, the user will automatically get the option to "Dismiss Permanently" (aka 1yr cookie expiration).
+
+###Usage with ajax
+```
+   $("{initializing_selector}").click(function(){
+      var popUpSettings = {
+         title:'Hello',
+         message: '', //empty message here wont throw an error since the content will be fetched with ajax
+         button: 'Dismiss',
+         customCss: 'newName',
+         url: 'path/to/content';,
+      };
+      loadRemotePopupContent(popUpSettings);
+   });
+```
+
+
+
+
+
+
+
+
+
